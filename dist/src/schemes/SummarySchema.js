@@ -7,6 +7,10 @@ const SummarySchemaModel = new mongoose_1.Schema({
         required: true,
         unique: true
     },
+    richtext: {
+        type: String,
+        required: true,
+    },
     skill: {
         type: String,
         required: true,
@@ -17,10 +21,10 @@ const SummarySchemaModel = new mongoose_1.Schema({
     }
 }, {
     collection: 'summary',
-    timestamps: { createdAt: true, updatedAt: false }
+    timestamps: { createdAt: true, updatedAt: true }
 });
 SummarySchemaModel.methods.toJSON = function () {
-    const { ...Summaries } = this.toObject();
+    const { createdAt, updatedAt, __v, ...Summaries } = this.toObject();
     return Summaries;
 };
 const SummarySchema = (0, mongoose_1.model)('summary', SummarySchemaModel);

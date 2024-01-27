@@ -19,12 +19,12 @@ const SkillSCategorychemaModel = new Schema(
     },
     {
         collection: 'skill_category',
-        timestamps: { createdAt: true, updatedAt: false }
+        timestamps: { createdAt: true, updatedAt: true }
     }
 );
 
 SkillSCategorychemaModel.methods.toJSON = function() {
-    const { ...SkillCategories  } = this.toObject();
+    const { createdAt,updatedAt,__v,...SkillCategories  } = this.toObject();
     return SkillCategories;
 }
 

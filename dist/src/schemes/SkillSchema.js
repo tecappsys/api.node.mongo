@@ -13,10 +13,10 @@ const SkillSchemaModel = new mongoose_1.Schema({
     }
 }, {
     collection: 'skill',
-    timestamps: { createdAt: true, updatedAt: false }
+    timestamps: { createdAt: true, updatedAt: true }
 });
 SkillSchemaModel.methods.toJSON = function () {
-    const { ...Skills } = this.toObject();
+    const { createdAt, updatedAt, __v, ...Skills } = this.toObject();
     return Skills;
 };
 const SkillSchema = (0, mongoose_1.model)('skill', SkillSchemaModel);

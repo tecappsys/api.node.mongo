@@ -15,12 +15,12 @@ const JobTitleSchemaModel = new Schema(
     },
     {
         collection: 'job_title',
-        timestamps: { createdAt: true, updatedAt: false }
+        timestamps: { createdAt: true, updatedAt: true }
     }
 );
 
 JobTitleSchemaModel.methods.toJSON = function() {
-    const { ...JobTitles  } = this.toObject();
+    const { createdAt,updatedAt,__v,...JobTitles  } = this.toObject();
     return JobTitles;
 }
 

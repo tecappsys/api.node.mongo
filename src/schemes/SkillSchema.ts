@@ -15,12 +15,12 @@ const SkillSchemaModel = new Schema(
     },
     {
         collection: 'skill',
-        timestamps: { createdAt: true, updatedAt: false }
+        timestamps: { createdAt: true, updatedAt: true }
     }
 );
 
 SkillSchemaModel.methods.toJSON = function() {
-    const { ...Skills  } = this.toObject();
+    const { createdAt,updatedAt,__v,...Skills  } = this.toObject();
     return Skills;
 }
 

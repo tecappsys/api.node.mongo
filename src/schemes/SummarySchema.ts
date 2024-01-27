@@ -7,6 +7,10 @@ const SummarySchemaModel = new Schema(
             type: String,
             required: true,
             unique: true
+        },        
+        richtext: {
+            type: String,
+            required: true,
         },
         skill: {
             type: String,
@@ -19,12 +23,12 @@ const SummarySchemaModel = new Schema(
     },
     {
         collection: 'summary',
-        timestamps: { createdAt: true, updatedAt: false }
+        timestamps: { createdAt: true, updatedAt: true }
     }
 );
 
 SummarySchemaModel.methods.toJSON = function() {
-    const { ...Summaries  } = this.toObject();
+    const { createdAt,updatedAt,__v,...Summaries  } = this.toObject();
     return Summaries;
 }
 

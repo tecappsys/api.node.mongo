@@ -4,6 +4,7 @@ import SummarySchema from "../schemes/SummarySchema";
 import SkillSchema from "../schemes/SkillSchema";
 import SkillCategorySchema from "../schemes/SkillCategorySchema";
 import JobTitleSchema from "../schemes/JobTitleSchema";
+import ExperienceSchema from "../schemes/ExperienceSchema";
 
 export const summary_get_all = async( req: Request , res: Response ) => {
     try {      
@@ -25,9 +26,9 @@ export const summary_get_all = async( req: Request , res: Response ) => {
 
 export const summary_post = async( req: Request , res: Response ) => {
     try {     
-        const {summary,skill,category} = req.body;
-        if(summary && skill && category){
-            const summarySchema = new SummarySchema({summary,skill,category});
+        const {summary,skill,category,richtext} = req.body;
+        if(summary && skill && category && richtext){
+            const summarySchema = new SummarySchema({summary,skill,category,richtext});
             let data = null;
             await Promise.all([summarySchema.save()]).then(results => {
                 // results is an array of the results of each promise, in order.
@@ -46,10 +47,10 @@ export const summary_post = async( req: Request , res: Response ) => {
 
 export const summary_put = async( req: Request , res: Response ) => {
     try {     
-        const {id,summary,skill,category} = req.body;
-        if(id && summary && skill && category){
+        const {id,summary,skill,category,richtext} = req.body;
+        if(id && summary && skill && category && richtext){
             let data = null;
-            await Promise.all([SummarySchema.findByIdAndUpdate( id, {summary,skill,category} )]).then(results => {
+            await Promise.all([SummarySchema.findByIdAndUpdate( id, {summary,skill,category,richtext} )]).then(results => {
                 // results is an array of the results of each promise, in order.
                 data = { results: results[0] };
             }).catch(err => {
@@ -156,6 +157,59 @@ export const job_title_get_all = async( req: Request , res: Response ) => {
             processErrorResponse(err);
         });
         return res.json( data ); 
+    } catch (fail) {
+        processErrorResponse(fail);
+    }    
+}
+
+export const experience_get_all = async( req: Request , res: Response ) => {
+    try {
+        let data = null;
+        await Promise.all([ExperienceSchema.countDocuments(),ExperienceSchema.find()]).then(results => {
+            // results is an array of the results of each promise, in order.
+            data = {
+                total:results[0],
+                entity:results[1]
+            } ;  
+        }).catch(err => {
+            processErrorResponse(err);
+        });
+        return res.json( data ); 
+    } catch (fail) {
+        processErrorResponse(fail);
+    }    
+}
+
+export const experience_add_summary = async( req: Request , res: Response ) => {
+    try {     
+        const {id,summary} = req.body;
+        if(id && summary){
+            let data = null;
+            await Promise.all([ExperienceSchema.findOneAndUpdate( {_id: id}, { $push: { summary:summary } },{new:true} )]).then(results => {
+                // results is an array of the results of each promise, in order.
+                data = { results: results[0] };
+            }).catch(err => {
+                processErrorResponse(err);
+            });
+            return res.json( data );
+        }else{
+            res.json(null);
+        }
+    } catch (fail) {
+        processErrorResponse(fail);
+    }    
+}
+
+export const experience_empty_summary = async( req: Request , res: Response ) => {
+    try {     
+        let data = null;
+        await Promise.all([ExperienceSchema.updateMany({},{summary:[]},{multi: true})]).then(results => {
+            // results is an array of the results of each promise, in order.
+            data = { results: results[0] };
+        }).catch(err => {
+            processErrorResponse(err);
+        });
+        return res.json( data );        
     } catch (fail) {
         processErrorResponse(fail);
     }    

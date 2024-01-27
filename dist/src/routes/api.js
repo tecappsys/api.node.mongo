@@ -11,5 +11,9 @@ router.get('/skill', summary_controller_1.skill_get_all);
 router.get('/skill_category', summary_controller_1.skill_category_get_all);
 router.get('/skill_category/:skill', summary_controller_1.skill_category_by_skill);
 router.get('/job_title', summary_controller_1.job_title_get_all);
+router.get('/experience', summary_controller_1.experience_get_all);
+router.put('/experience/empty', summary_controller_1.experience_empty_summary);
+router.put('/experience/summary', summary_controller_1.experience_add_summary);
+router.put('/experience/summary/empty', summary_controller_1.experience_empty_summary);
 exports.default = router;
 //# sourceMappingURL=api.js.map
